@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useCallback} from "react";
 
 function App(){
     const[charAllowed, changeCharAllowed]=useState(false);
@@ -20,12 +20,16 @@ function App(){
         }
         changePassword(pass);
     },[charAllowed, numAllowed, passLength])
+    const copyPass=useCallback(()=>{window.navigator.clipboard.writeText(password)},[password])
     return(
         <>
             <div className="h-screen w-full bg-slate-700 flex justify-center items-center ">
                 <div className="bg-violet-900 w-1/2 flex flex-col py-4 px-4 rounded-lg justify-center items-center text-center gap-5">
                     <h1 className="text-white text-center text-2xl">Password Generator</h1>
-                    <input type="text" value={password} className="w-4/5 h-8 rounded-lg px-2 focus:outline-none focus:border-cyan-600" placeholder="Generate Password" readOnly />
+                    <div className="w-full">
+                        <input type="text" value={password} className="w-4/5 h-8 rounded-l-lg px-2 focus:outline-none focus:border-cyan-600" placeholder="Generate Password" readOnly />
+                        <button onClick={copyPass} className="active:scale-50 py-1  bg-green-800 px-4 rounded-r-lg text-white hover:bg-green-900">COPY</button>
+                        </div>
                     <div className="flex gap-5 justify-center ">
                         <span className="flex justify-center items-center">
                             <input id="passLength" type="range" min={6} max={20} value={passLength}  className="mr-1" onChange={(e)=>{changePassLength(e.target.value)}}  />
